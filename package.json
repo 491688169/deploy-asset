@@ -25,10 +25,6 @@
     "name": "qianjin",
     "email": "491688169@qq.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/491688169/deploy-asset.git"
-  },
   "keywords": [
     "deploy-asset",
     "deploy",

@@ -1,9 +1,7 @@
 {
   "name": "deploy-asset",
   "description": "对前端静态资源 Compress, Revisioning 以及 Uploading",
-  "version": "1.2.0",
-  "homepage": "https://github.com/qiu8310/deploy-asset",
-  "bugs": "https://github.com/qiu8310/deploy-asset/issues",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "build/da.js",
   "files": [
@@ -25,12 +23,12 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec -t 10000 --compilers js:babel/register test/test-* && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "author": {
-    "name": "Zhonglei Qiu",
-    "email": "qiuzhongleiabc@126.com"
+    "name": "qianjin",
+    "email": "491688169@qq.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qiu8310/deploy-asset"
+    "url": "https://github.com/491688169/deploy-asset.git"
   },
   "keywords": [
     "deploy-asset",

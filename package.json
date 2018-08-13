@@ -2,7 +2,6 @@
   "name": "deploy-asset",
   "description": "对前端静态资源 Compress, Revisioning 以及 Uploading",
   "version": "0.0.1",
-  "license": "MIT",
   "main": "build/da.js",
   "files": [
     "bin/",

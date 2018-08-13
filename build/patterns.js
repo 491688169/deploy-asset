@@ -34,7 +34,12 @@
  * @private
  * @type {Object}
  */
-export default {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = {
   html: [{
     type: 'js',
     re: /<script[^\>]+src=['"]([^"']+)["']/gm,
@@ -69,11 +74,11 @@ export default {
     type: 'js',
     re: /data-main=['"]([^"']+)['"]/gm,
     msg: '查找 html 文件中 require.js 指定的 data-main 属性中的 js 文件',
-    inFilter: function (m) {
+    inFilter: function inFilter(m) {
       return (/\.js$/.test(m) ? m : m + '.js'
       );
     },
-    outFilter: function (m) {
+    outFilter: function outFilter(m) {
       return m.replace(/\.js$/, '');
     }
   }, {
@@ -141,3 +146,4 @@ export default {
     msg: '查找 json 文件中引用的文件'
   }]
 };
+module.exports = exports['default'];

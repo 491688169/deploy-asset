@@ -1,10 +1,34 @@
-import minimatch from 'minimatch';
-import path from 'x-path';
-import ylog from 'ylog';
-import _ from 'lodash';
-import crypto from 'crypto';
+'use strict';
 
-import FileType from './FileType';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _minimatch = require('minimatch');
+
+var _minimatch2 = _interopRequireDefault(_minimatch);
+
+var _xPath = require('x-path');
+
+var _xPath2 = _interopRequireDefault(_xPath);
+
+var _ylog = require('ylog');
+
+var _ylog2 = _interopRequireDefault(_ylog);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _crypto = require('crypto');
+
+var _crypto2 = _interopRequireDefault(_crypto);
+
+var _FileType = require('./FileType');
+
+var _FileType2 = _interopRequireDefault(_FileType);
 
 /**
  * 得到文件（不包括文件夹）的公共目录
@@ -12,21 +36,25 @@ import FileType from './FileType';
  * @returns {String}
  */
 function getFilesCommonDirectory(filePaths) {
-  if (filePaths.length === 1) return path.dirname(filePaths[0]);
-  filePaths = filePaths.map(f => path.resolve(f));
+  if (filePaths.length === 1) return _xPath2['default'].dirname(filePaths[0]);
+  filePaths = filePaths.map(function (f) {
+    return _xPath2['default'].resolve(f);
+  });
 
-  let refs = filePaths[0].split(/\\|\//);
+  var refs = filePaths[0].split(/\\|\//);
 
-  let dir = refs[0] || '/'; // 非 windows 下第一个值是 ''，将它转化成根目录
+  var dir = refs[0] || '/'; // 非 windows 下第一个值是 ''，将它转化成根目录
 
-  let check = dir => filePath => {
-    return filePath.indexOf(dir) === 0 && ['/', '\\'].indexOf(filePath[dir.length]) >= 0;
+  var check = function check(dir) {
+    return function (filePath) {
+      return filePath.indexOf(dir) === 0 && ['/', '\\'].indexOf(filePath[dir.length]) >= 0;
+    };
   };
 
-  let matchOnce = false;
+  var matchOnce = false;
 
-  for (let i = 1; i < refs.length; i++) {
-    if (filePaths.every(check(path.join(dir, refs[i])))) dir = path.join(dir, refs[i]);else break;
+  for (var i = 1; i < refs.length; i++) {
+    if (filePaths.every(check(_xPath2['default'].join(dir, refs[i])))) dir = _xPath2['default'].join(dir, refs[i]);else break;
     matchOnce = true;
   }
 
@@ -54,8 +82,16 @@ function normalizeBaseUrl(baseUrl) {
  * @param {Array} parts
  * @returns {string}
  */
-function urlJoin(baseUrl, ...parts) {
-  parts = parts.map(part => part.replace(/\\/g, '/').replace(/^\/|\/$/g, '')).filter(part => part && part.length);
+function urlJoin(baseUrl) {
+  for (var _len = arguments.length, parts = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    parts[_key - 1] = arguments[_key];
+  }
+
+  parts = parts.map(function (part) {
+    return part.replace(/\\/g, '/').replace(/^\/|\/$/g, '');
+  }).filter(function (part) {
+    return part && part.length;
+  });
 
   return normalizeBaseUrl(baseUrl) + parts.join('/');
 }
@@ -76,26 +112,29 @@ function normalizeError(err) {
   return new Error(JSON.stringify(err));
 }
 
-export default {
+exports['default'] = {
 
-  md5(str) {
-    let hash = crypto.createHash('md5');
+  md5: function md5(str) {
+    var hash = _crypto2['default'].createHash('md5');
     hash.update(str);
     return hash.digest('hex');
   },
 
-  banner(title) {
-    ylog.info.ln.ln.log('===============').title(`**${title}**`).log('===============').ln();
+  banner: function banner(title) {
+    _ylog2['default'].info.ln.ln.log('===============').title('**' + title + '**').log('===============').ln();
   },
 
-  error(err, level = 'warn', stack = false) {
-    ylog.color(level === 'warn' ? 'yellow' : 'red')[level](stack ? err : err.message);
+  error: function error(err) {
+    var level = arguments.length <= 1 || arguments[1] === undefined ? 'warn' : arguments[1];
+    var stack = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+    _ylog2['default'].color(level === 'warn' ? 'yellow' : 'red')[level](stack ? err : err.message);
   },
 
-  urlJoin,
-  normalizeError,
-  normalizeBaseUrl,
-  getFilesCommonDirectory,
+  urlJoin: urlJoin,
+  normalizeError: normalizeError,
+  normalizeBaseUrl: normalizeBaseUrl,
+  getFilesCommonDirectory: getFilesCommonDirectory,
 
   /**
    * @param {Array} list
@@ -103,9 +142,15 @@ export default {
    * @param {Function} [mapFn = null]
    * @returns {Array}
    */
-  match(list, patterns, mapFn = null) {
+  match: function match(list, patterns) {
+    var mapFn = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
     if (!Array.isArray(patterns)) patterns = [patterns];
-    return list.filter(it => patterns.some(pattern => minimatch(mapFn ? mapFn(it) : it, pattern)));
+    return list.filter(function (it) {
+      return patterns.some(function (pattern) {
+        return (0, _minimatch2['default'])(mapFn ? mapFn(it) : it, pattern);
+      });
+    });
   },
 
   /**
@@ -114,11 +159,13 @@ export default {
    * @param {Function} [mapFn = null]
    * @returns {Array}
    */
-  applyWhitelist(list, patterns, mapFn = null) {
+  applyWhitelist: function applyWhitelist(list, patterns) {
+    var mapFn = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
     if (patterns === false) return [];
     if (!patterns || patterns.length === 0 || patterns === true) return list;
 
-    return _.intersection(list, this.match(list, patterns, mapFn));
+    return _lodash2['default'].intersection(list, this.match(list, patterns, mapFn));
   },
 
   /**
@@ -127,11 +174,13 @@ export default {
    * @param {Function} [mapFn = null]
    * @returns {Array}
    */
-  applyBlacklist(list, patterns, mapFn = null) {
+  applyBlacklist: function applyBlacklist(list, patterns) {
+    var mapFn = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
     if (patterns === true) return [];
     if (!patterns || patterns.length === 0 || patterns === false) return list;
 
-    return _.difference(list, this.match(list, patterns, mapFn));
+    return _lodash2['default'].difference(list, this.match(list, patterns, mapFn));
   },
 
   /**
@@ -141,7 +190,9 @@ export default {
    * @param {Function} [mapFn = null]
    * @returns {Array}
    */
-  applyWhiteAndBlackList(list, whitePatterns, blackPatterns, mapFn = null) {
+  applyWhiteAndBlackList: function applyWhiteAndBlackList(list, whitePatterns, blackPatterns) {
+    var mapFn = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+
     return this.applyBlacklist(this.applyWhitelist(list, whitePatterns, mapFn), blackPatterns, mapFn);
   },
 
@@ -156,14 +207,17 @@ export default {
    * @param {String} [defaultType = FileType.STATIC.value]
    * @returns {String}
    */
-  getFileType(filename, opts = {}, defaultType = FileType.STATIC.value) {
-    let ext = filename.split('.').pop();
-    let type = defaultType;
-    let keys = _.keys(FileType);
-    let has = custom => {
-      return keys.some(key => {
-        let ft = FileType[key];
-        let extensions = custom ? opts[ft.value + 'Extensions'] : ft.extensions;
+  getFileType: function getFileType(filename) {
+    var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    var defaultType = arguments.length <= 2 || arguments[2] === undefined ? _FileType2['default'].STATIC.value : arguments[2];
+
+    var ext = filename.split('.').pop();
+    var type = defaultType;
+    var keys = _lodash2['default'].keys(_FileType2['default']);
+    var has = function has(custom) {
+      return keys.some(function (key) {
+        var ft = _FileType2['default'][key];
+        var extensions = custom ? opts[ft.value + 'Extensions'] : ft.extensions;
         if (extensions && extensions.indexOf(ext) >= 0) {
           type = ft.value;
           return true;
@@ -177,3 +231,4 @@ export default {
     return type;
   }
 };
+module.exports = exports['default'];

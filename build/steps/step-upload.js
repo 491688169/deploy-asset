@@ -1,39 +1,61 @@
-import async from 'async';
-import ylog from 'ylog';
-import util from '../util';
+'use strict';
 
-export default function (files, opts, done) {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+var _ylog = require('ylog');
+
+var _ylog2 = _interopRequireDefault(_ylog);
+
+var _util = require('../util');
+
+var _util2 = _interopRequireDefault(_util);
+
+exports['default'] = function (files, opts, done) {
   try {
+    (function () {
 
-    util.banner('开始上传');
+      _util2['default'].banner('开始上传');
 
-    let uploader = opts.uploader;
-    let uploadingCount = 0;
-    let uploadingError;
+      var uploader = opts.uploader;
+      var uploadingCount = 0;
+      var uploadingError = undefined;
 
-    let endStep = err => {
-      if (err && uploadingCount !== 0) {
-        uploadingError = err;
-        return false;
-      }
-      done(err, files, opts);
-    };
-
-    ylog.verbose('同时上传文件的个数为 ^%s^', opts.concurrence);
-
-    let upload = (file, nextFile) => {
-      uploadingCount++;
-      file.upload(err => {
-        uploadingCount--;
-        if (uploadingCount === 0 && uploadingError) {
-          done(uploadingError);
+      var endStep = function endStep(err) {
+        if (err && uploadingCount !== 0) {
+          uploadingError = err;
+          return false;
         }
-        nextFile(err);
-      });
-    };
+        done(err, files, opts);
+      };
 
-    uploader.run(endUpload => async.eachLimit(files, opts.concurrence, upload, endUpload), endStep);
+      _ylog2['default'].verbose('同时上传文件的个数为 ^%s^', opts.concurrence);
+
+      var upload = function upload(file, nextFile) {
+        uploadingCount++;
+        file.upload(function (err) {
+          uploadingCount--;
+          if (uploadingCount === 0 && uploadingError) {
+            done(uploadingError);
+          }
+          nextFile(err);
+        });
+      };
+
+      uploader.run(function (endUpload) {
+        return _async2['default'].eachLimit(files, opts.concurrence, upload, endUpload);
+      }, endStep);
+    })();
   } catch (e) {
     done(e);
   }
-}
+};
+
+module.exports = exports['default'];

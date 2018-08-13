@@ -106,9 +106,29 @@ var AliUploader = (function (_Uploader) {
   }, {
     key: 'isRemoteFileExists',
     value: function isRemoteFileExists(file, done) {
-      this.client.get(this.env.getFileRemotePath(file, false)).then(function (ret) {
-        if (ret) done(null, true);else done(null);
-      });
+      return regeneratorRuntime.async(function isRemoteFileExists$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.prev = 0;
+            context$2$0.next = 3;
+            return regeneratorRuntime.awrap(this.client.get(this.env.getFileRemotePath(file, false)));
+
+          case 3:
+            done(null, true);
+            context$2$0.next = 9;
+            break;
+
+          case 6:
+            context$2$0.prev = 6;
+            context$2$0.t0 = context$2$0['catch'](0);
+
+            done(null);
+
+          case 9:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this, [[0, 6]]);
     }
 
     /**
@@ -118,9 +138,32 @@ var AliUploader = (function (_Uploader) {
   }, {
     key: 'getRemoteFileContent',
     value: function getRemoteFileContent(file, done) {
-      this.client.get(this.env.getFileRemotePath(file, false)).then(function (err, buffer) {
-        done(err, err ? null : buffer);
-      });
+      var buffer;
+      return regeneratorRuntime.async(function getRemoteFileContent$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.prev = 0;
+            context$2$0.next = 3;
+            return regeneratorRuntime.awrap(this.client.get(this.env.getFileRemotePath(file, false)));
+
+          case 3:
+            buffer = context$2$0.sent;
+
+            done(null, buffer);
+            context$2$0.next = 10;
+            break;
+
+          case 7:
+            context$2$0.prev = 7;
+            context$2$0.t0 = context$2$0['catch'](0);
+
+            done(context$2$0.t0, null);
+
+          case 10:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this, [[0, 7]]);
     }
 
     /**

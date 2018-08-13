@@ -61,26 +61,24 @@ class AliUploader extends Uploader {
    * @override
    * @borrows Uploader.isRemoteFileExists
    */
-  async isRemoteFileExists(file, done) {
-    try {
-      await this.client.get(this.env.getFileRemotePath(file, false))
-      done(null, true)
-    } catch (e) {
+  isRemoteFileExists(file, done) {
+    this.client.get(this.env.getFileRemotePath(file, false)).then(ret => {
+      done(null, true);
+    }).catch(err => {
       done(null)
-    }
+    })
   }
 
   /**
    * @override
    * @borrows Uploader.getRemoteFileContent
    */
-  async getRemoteFileContent(file, done) {
-    try {
-      const buffer = await this.client.get(this.env.getFileRemotePath(file, false))
-      done(null, buffer)
-    } catch (err) {
+  getRemoteFileContent(file, done) {
+    this.client.get(this.env.getFileRemotePath(file, false)).then(buffer => {
+      done(null, buffer);
+    }).catch(err => {
       done(err, null)
-    }
+    })
   }
 
   /**
@@ -88,10 +86,11 @@ class AliUploader extends Uploader {
    * @borrows Uploader.removeRemoteFile
    */
   removeRemoteFile(file, done) {
-    this.client.delete(this.env.getFileRemotePath(file, false), (err, ret) => {
-      if (err) return done(err);
-      done(null, ret);
-    });
+    this.client.delete(this.env.getFileRemotePath(file, false)).then(ret => {
+      done(null, ret)
+    }).catch(err => {
+      done(err)
+    })
   }
 }
 

@@ -5,41 +5,15 @@
  * Copyright (c) 2015 Zhonglei Qiu
  * Licensed under the MIT license.
  */
-'use strict';
+require('es6-shim');
+import os from 'os';
+import _ from 'lodash';
+import async from 'async';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _os = require('os');
-
-var _os2 = _interopRequireDefault(_os);
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _async = require('async');
-
-var _async2 = _interopRequireDefault(_async);
-
-var _stepsStepInit = require('./steps/step-init');
-
-var _stepsStepInit2 = _interopRequireDefault(_stepsStepInit);
-
-var _stepsStepInspect = require('./steps/step-inspect');
-
-var _stepsStepInspect2 = _interopRequireDefault(_stepsStepInspect);
-
-var _stepsStepReplace = require('./steps/step-replace');
-
-var _stepsStepReplace2 = _interopRequireDefault(_stepsStepReplace);
-
-var _stepsStepUpload = require('./steps/step-upload');
-
-var _stepsStepUpload2 = _interopRequireDefault(_stepsStepUpload);
+import stepInit from './steps/step-init';
+import stepInspect from './steps/step-inspect';
+import stepReplace from './steps/step-replace';
+import stepUpload from './steps/step-upload';
 
 /**
  * @typedef {Object} DAOpts
@@ -134,17 +108,16 @@ var _stepsStepUpload2 = _interopRequireDefault(_stepsStepUpload);
  */
 
 // 这里的值会应用到全局的 opts 中
-require('es6-shim');
-var defaults = {
+const defaults = {
   logLevel: 'warn',
   hashSource: 'remote',
-  concurrence: _os2['default'].cpus().length * 2
+  concurrence: os.cpus().length * 2
 };
 
-var STEPS = [_stepsStepInit2['default'], _stepsStepInspect2['default'], _stepsStepReplace2['default'], _stepsStepUpload2['default']];
+const STEPS = [stepInit, stepInspect, stepReplace, stepUpload];
 
 // 这里的值不会应用到全局，只有在需要的时候程序自动调用
-var DEFAULTS = {
+let DEFAULTS = {
   STEP_VALUE_MAP: { init: 1, inspect: 2, replace: 3, upload: 4 },
   APPLY_STEP: {}, // 标识哪些步骤执行了
   RUN_TO_STEP: 'upload',
@@ -164,40 +137,33 @@ var DEFAULTS = {
  * @param {Function} [callback] - 部署成功的回调函数
  */
 function da(any, opts, callback) {
-  if (typeof opts === 'function') {
-    ;
+  if (typeof opts === 'function') [opts, callback] = [callback, opts];
 
-    var _ref = [callback, opts];
-    opts = _ref[0];
-    callback = _ref[1];
-  } // 创建一个全新的对象，避免修改源头，
+  // 创建一个全新的对象，避免修改源头，
   // 并且保证这个 opts 以后不要被重新创建了，因为 callback 中引用了它
-  opts = _lodash2['default'].assign({}, defaults, opts);
+  opts = _.assign({}, defaults, opts);
 
   opts.DEFAULTS = DEFAULTS;
 
-  var stepVal = undefined;
+  let stepVal;
 
-  var startFn = function startFn(next) {
+  let startFn = next => {
     next(null, any, opts);
   };
 
-  var endFn = function endFn(err, files) {
+  let endFn = (err, files) => {
     if (typeof callback === 'function') callback(err, files, opts);
   };
 
-  var map = DEFAULTS.STEP_VALUE_MAP;
+  let map = DEFAULTS.STEP_VALUE_MAP;
 
   stepVal = map[opts.runToStep || DEFAULTS.RUN_TO_STEP];
 
-  if (!stepVal) return endFn(new Error('STEP_NOT_FOUND'));
+  if (!stepVal) return endFn(new Error(`STEP_NOT_FOUND`));
 
-  Object.keys(map).forEach(function (key) {
-    return DEFAULTS.APPLY_STEP[key] = map[key] <= stepVal;
-  });
+  Object.keys(map).forEach(key => DEFAULTS.APPLY_STEP[key] = map[key] <= stepVal);
 
-  _async2['default'].waterfall([startFn].concat(STEPS.slice(0, stepVal)), endFn);
+  async.waterfall([startFn].concat(STEPS.slice(0, stepVal)), endFn);
 }
 
-exports['default'] = da;
-module.exports = exports['default'];
+export default da;

@@ -1,9 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+export default {
   HTML: {
     value: 'html',
     extensions: ['html', 'htm'],
@@ -30,4 +25,3 @@ exports['default'] = {
     inspectable: false
   }
 };
-module.exports = exports['default'];

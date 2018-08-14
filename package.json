@@ -81,12 +81,17 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-regenerator": "^6.26.0",
     "coveralls": "^2.11.4",
     "ftp-test-server": "0.0.2",
     "istanbul": "^0.3.21",
     "mocha": "^2.3.3",
     "mocha-lcov-reporter": "^1.0.0",
-    "should": "^7.1.0"
+    "should": "^7.1.0",
+    "transform-runtime": "0.0.0"
   },
   "optionalDependencies": {
     "min-asset": "^0.1.0"

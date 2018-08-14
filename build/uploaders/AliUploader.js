@@ -143,7 +143,7 @@ var AliUploader = function (_Uploader) {
                 ret = _context.sent;
 
                 console.log('isRemoteFileExists', ret);
-                done(null, false);
+                done(null, true);
                 _context.next = 11;
                 break;
 
@@ -151,7 +151,7 @@ var AliUploader = function (_Uploader) {
                 _context.prev = 8;
                 _context.t0 = _context['catch'](0);
 
-                done(null, true);
+                done(null, false);
 
               case 11:
               case 'end':

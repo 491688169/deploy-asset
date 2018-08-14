@@ -68,9 +68,9 @@ class AliUploader extends Uploader {
     try {
       const ret = await this.client.get(this.env.getFileRemotePath(file, false));
       console.log('isRemoteFileExists', ret)
-      done(null, false)
-    } catch (e) {
       done(null, true)
+    } catch (e) {
+      done(null, false)
     }
   }
 

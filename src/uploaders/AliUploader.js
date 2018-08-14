@@ -91,7 +91,7 @@ class AliUploader extends Uploader {
    */
   async removeRemoteFile(file, done) {
     try {
-      const ret = await this.client.delete(this.env.getFileRemotePath(file, false))
+      const ret = await this.client.delete(this.env.getFileRemotePath(file, false));
       done(null, ret)
     } catch (err) {
       done(err)

@@ -45,7 +45,7 @@ function getFilesCommonDirectory(filePaths) {
  */
 function normalizeBaseUrl(baseUrl) {
   return baseUrl.replace(/^(\w+:\/\/)?(.*?)(\/)?$/, function(raw, prefix, mid, postfix) {
-    return (prefix || 'http://') + mid + (postfix || '/');
+    return (prefix || 'https://') + mid + (postfix || '/');
   });
 }
 

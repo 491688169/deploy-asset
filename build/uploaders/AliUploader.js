@@ -115,6 +115,8 @@ var AliUploader = function (_Uploader) {
       var filePath = this.env.getFileRemotePath(file, false);
       this.client.put(filePath, file).then(function (ret) {
         done(null, ret);
+      }).catch(function (err) {
+        done(err);
       });
     }
 
@@ -136,7 +138,7 @@ var AliUploader = function (_Uploader) {
                 return this.client.get(this.env.getFileRemotePath(file, false));
 
               case 3:
-                done(null, true);
+                done(null, false);
                 _context.next = 9;
                 break;
 
@@ -144,7 +146,7 @@ var AliUploader = function (_Uploader) {
                 _context.prev = 6;
                 _context.t0 = _context['catch'](0);
 
-                done(null);
+                done(null, true);
 
               case 9:
               case 'end':

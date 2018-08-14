@@ -1,134 +1,75 @@
-import ylog from 'ylog';
-import async from 'async';
-import _ from 'lodash';
-import path from 'x-path';
-// import min from 'min-asset';
-import pb from 'pretty-bytes';
+'use strict';
 
-import util from '../util';
-import File from '../file';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var min;
-try {
-  min = require('min-asset'); // 可选的插件（安装起来比较费劲）
-} catch (e) {}
+exports.default = function (filePaths, opts, next) {
 
-function _compress(file, done) {
-  let type = file.type === File.STATIC_TYPE ? min.helper.type(file.filePath) : file.type;
-  let minTypes = file.opts.min;
-  let minOpts = file.opts['min' + _.capitalize(type)];
+  _util2.default.banner('资源检查' + (opts.min ? '(并压缩)' : ''));
 
-  if (!type || minOpts === false) return done(null, file);
-  if (typeof minTypes === 'string') minTypes = minTypes.split(',');
-  if (Array.isArray(minTypes) && minTypes.length && minTypes.indexOf(type) < 0) return done(null, file);
-
-  minOpts = minOpts || {};
-
-  ylog.info.title('开始压缩文件 ^%s^ ...', file.relativePath);
-  min(file.content, file.filePath, minOpts, (err, data) => {
-
-    if (err) return done(err);
-    let oz = data.originalSize,
-        mz = data.minifiedSize;
-    let diff = oz - mz;
-    let rate = (diff * 100 / oz).toFixed();
-    if (diff > 10) {
-      file.min = {};
-      file.min.originalSize = oz;
-      file.min.minifiedSize = mz;
-      file.min.diffSize = diff;
-      file.min.rate = rate;
-      ylog.info.writeOk('新文件 !%s! , 文件压缩了 ~%s~ , 压缩率 ~%s%~', pb(mz), pb(diff), rate).ln();
-      file.remote.content = data.content;
-    } else {
-      ylog.info.writeOk('*文件已经最小了，不需要压缩（改变压缩配置看看）*').ln();
-    }
-    done(null, file);
-  });
-}
-
-function _inspect(file, done) {
-  if (file.type === File.STATIC_TYPE) return done(null, []);
-
-  ylog.info.title('开始检查文件 ^%s^ ...', file.relativePath);
-
-  let assets;
-
-  try {
-    assets = file.insp(file.opts.inspectFilter);
-  } catch (e) {
-    return done(e);
-  }
-
-  assets.forEach(a => {
-    ylog.verbose(`   资源 &%s-%s& : &%s&  *引用处: %s*`, a.start, a.end, a.src, a.raw);
-  });
-
-  ylog.info.writeOk('共找到 ^%s^ 处静态资源', assets.length).ln();
-
-  done(null, file.resolveAssets());
-}
-
-export default function (filePaths, opts, next) {
-
-  util.banner('资源检查' + (opts.min ? '(并压缩)' : ''));
-
-  File.refs = {}; // 先将引用清空
-  let inspectedFiles = [];
+  _file2.default.refs = {}; // 先将引用清空
+  var inspectedFiles = [];
 
   try {
 
-    let getFile = (filePath, asset = null) => {
-      let file = File.findFileInRefs(filePath);
-      return file ? file : new File(filePath, opts.rootDir, opts, asset);
+    var getFile = function getFile(filePath) {
+      var asset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      var file = _file2.default.findFileInRefs(filePath);
+      return file ? file : new _file2.default(filePath, opts.rootDir, opts, asset);
     };
 
-    let inspect = (file, done) => {
+    var inspect = function inspect(file, done) {
       if (inspectedFiles.indexOf(file) >= 0) return done(null, []);
       inspectedFiles.push(file);
 
       if (opts.min && min) {
-        _compress(file, (err, file) => {
+        _compress(file, function (err, file) {
           if (err) return done(err);
           _inspect(file, done);
         });
       } else {
         if (opts.min) {
-          ylog.warn('需要安装 ~min-asset~ 才能使用压缩功能').ln().warn('注意：如果你是全局安装的 deploy-asset，那么请先执行 `cd ' + path.dirname(path.dirname(__dirname)) + '`').ln();
+          _ylog2.default.warn('需要安装 ~min-asset~ 才能使用压缩功能').ln().warn('注意：如果你是全局安装的 deploy-asset，那么请先执行 `cd ' + _xPath2.default.dirname(_xPath2.default.dirname(__dirname)) + '`').ln();
         }
         _inspect(file, done);
       }
     };
 
-    let walk = (files, done) => {
-      async.eachSeries(files, (file, next) => {
-        inspect(file, (err, assets) => {
+    var walk = function walk(files, done) {
+      _async2.default.eachSeries(files, function (file, next) {
+        inspect(file, function (err, assets) {
           if (err) return done(err);
           walk(assets, next);
         });
       }, done);
     };
 
-    let startFiles = filePaths.map(getFile);
-    walk(startFiles, err => {
+    var startFiles = filePaths.map(getFile);
+    walk(startFiles, function (err) {
       if (err) return next(err);
 
-      ylog.verbose('检查后的文件 *%o*', inspectedFiles.map(file => file.relativePath));
+      _ylog2.default.verbose('检查后的文件 *%o*', inspectedFiles.map(function (file) {
+        return file.relativePath;
+      }));
 
       // 检查是否为没有上传，同时又包含其它上传了的静态资源的文件指定 outDir
-      err = inspectedFiles.some(f => {
+      err = inspectedFiles.some(function (f) {
         if (f.shouldSave() && !opts.outDir) {
-          ylog.error('没有指定 ~--outDir~ 参数').ln().error('文件 ^%s^ 指定为不要上传，但此文件包含有其它静态资源，它里面的内容会被替换', f.relativePath).ln().error('所以如果不上传此文件，请指定一个输出目录，将更新后的文件输出在指定的目录内');
+          _ylog2.default.error('没有指定 ~--outDir~ 参数').ln().error('文件 ^%s^ 指定为不要上传，但此文件包含有其它静态资源，它里面的内容会被替换', f.relativePath).ln().error('所以如果不上传此文件，请指定一个输出目录，将更新后的文件输出在指定的目录内');
 
           return true;
         }
       });
       if (err) return next(new Error('NO_OUT_DIR_FOR_FILE'));
 
-      err = inspectedFiles.some(f => {
-        let a = f.assets.length && f.assets.find(a => !getFile(a.filePath).apply.upload);
+      err = inspectedFiles.some(function (f) {
+        var a = f.assets.length && f.assets.find(function (a) {
+          return !getFile(a.filePath).apply.upload;
+        });
         if (f.apply.upload && f.apply.replace && a) {
-          ylog.error('文件 ^%s^ 需要上传，但它所依赖的静态 ^%s^ 却没有上传', f.relativePath, a.filePath).ln().error('这样可能会导致上传的文件找不到它的依赖而显示不正常');
+          _ylog2.default.error('文件 ^%s^ 需要上传，但它所依赖的静态 ^%s^ 却没有上传', f.relativePath, a.filePath).ln().error('这样可能会导致上传的文件找不到它的依赖而显示不正常');
           return true;
         }
       });
@@ -141,6 +82,99 @@ export default function (filePaths, opts, next) {
   } catch (e) {
     return next(e);
   }
+};
+
+var _ylog = require('ylog');
+
+var _ylog2 = _interopRequireDefault(_ylog);
+
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _xPath = require('x-path');
+
+var _xPath2 = _interopRequireDefault(_xPath);
+
+var _prettyBytes = require('pretty-bytes');
+
+var _prettyBytes2 = _interopRequireDefault(_prettyBytes);
+
+var _util = require('../util');
+
+var _util2 = _interopRequireDefault(_util);
+
+var _file = require('../file');
+
+var _file2 = _interopRequireDefault(_file);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var min;
+// import min from 'min-asset';
+
+try {
+  min = require('min-asset'); // 可选的插件（安装起来比较费劲）
+} catch (e) {}
+
+function _compress(file, done) {
+  var type = file.type === _file2.default.STATIC_TYPE ? min.helper.type(file.filePath) : file.type;
+  var minTypes = file.opts.min;
+  var minOpts = file.opts['min' + _lodash2.default.capitalize(type)];
+
+  if (!type || minOpts === false) return done(null, file);
+  if (typeof minTypes === 'string') minTypes = minTypes.split(',');
+  if (Array.isArray(minTypes) && minTypes.length && minTypes.indexOf(type) < 0) return done(null, file);
+
+  minOpts = minOpts || {};
+
+  _ylog2.default.info.title('开始压缩文件 ^%s^ ...', file.relativePath);
+  min(file.content, file.filePath, minOpts, function (err, data) {
+
+    if (err) return done(err);
+    var oz = data.originalSize,
+        mz = data.minifiedSize;
+    var diff = oz - mz;
+    var rate = (diff * 100 / oz).toFixed();
+    if (diff > 10) {
+      file.min = {};
+      file.min.originalSize = oz;
+      file.min.minifiedSize = mz;
+      file.min.diffSize = diff;
+      file.min.rate = rate;
+      _ylog2.default.info.writeOk('新文件 !%s! , 文件压缩了 ~%s~ , 压缩率 ~%s%~', (0, _prettyBytes2.default)(mz), (0, _prettyBytes2.default)(diff), rate).ln();
+      file.remote.content = data.content;
+    } else {
+      _ylog2.default.info.writeOk('*文件已经最小了，不需要压缩（改变压缩配置看看）*').ln();
+    }
+    done(null, file);
+  });
+}
+
+function _inspect(file, done) {
+  if (file.type === _file2.default.STATIC_TYPE) return done(null, []);
+
+  _ylog2.default.info.title('开始检查文件 ^%s^ ...', file.relativePath);
+
+  var assets = void 0;
+
+  try {
+    assets = file.insp(file.opts.inspectFilter);
+  } catch (e) {
+    return done(e);
+  }
+
+  assets.forEach(function (a) {
+    _ylog2.default.verbose('   \u8D44\u6E90 &%s-%s& : &%s&  *\u5F15\u7528\u5904: %s*', a.start, a.end, a.src, a.raw);
+  });
+
+  _ylog2.default.info.writeOk('共找到 ^%s^ 处静态资源', assets.length).ln();
+
+  done(null, file.resolveAssets());
 }
 
 /*

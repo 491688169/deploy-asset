@@ -1,21 +1,40 @@
-import slash from 'slash';
-import path from 'path';
+'use strict';
 
-import util from './util';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _slash = require('slash');
+
+var _slash2 = _interopRequireDefault(_slash);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _util = require('./util');
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * 远程服务器相关的环境
  */
-class ServerEnv {
+var ServerEnv = function () {
+  function ServerEnv(opts) {
+    _classCallCheck(this, ServerEnv);
 
-  constructor(opts) {
+    var uploaderOpts = Object.assign({}, opts.uploaderOpts, opts.uploader && opts.uploader.opts || {});
 
-    let uploaderOpts = Object.assign({}, opts.uploaderOpts, opts.uploader && opts.uploader.opts || {});
-
-    let baseUrl = opts.baseUrl || uploaderOpts.baseUrl || uploaderOpts.domain;
+    var baseUrl = opts.baseUrl || uploaderOpts.baseUrl || uploaderOpts.domain;
     if (!baseUrl) throw new Error('NO_SPECIFY_BASE_URL');
 
-    let getVal = (key, dft) => {
+    var getVal = function getVal(key, dft) {
       return key in opts ? opts[key] : key in uploaderOpts ? uploaderOpts[key] : dft;
     };
 
@@ -29,7 +48,7 @@ class ServerEnv {
      * 远程服务器的基本 URL
      * @type {string}
      */
-    this.baseUrl = util.normalizeBaseUrl(baseUrl);
+    this.baseUrl = _util2.default.normalizeBaseUrl(baseUrl);
 
     /**
      * 是否要 destDir 附加到 baseUrl 中
@@ -43,37 +62,56 @@ class ServerEnv {
    * @param {File} file
    * @returns {string}
    */
-  getFileRemoteUrl(file) {
-    let { relative, basename } = file.remote;
-    let dir = this.appendDestDirToBaseUrl ? this.destDir : '';
-    return util.urlJoin(this.baseUrl, dir, relative, basename);
-  }
 
-  /**
-   * 获取远程文件的目录
-   * @param {File} file
-   * @param {Boolean} absolute - 是否使用绝对路径
-   * @returns {String}
-   */
-  getFileRemoteDir(file, absolute = true) {
-    // @NOTE join('', '') => '.'
-    let dir = path.join(this.destDir, file.remote.relative);
-    if (dir === '.') dir = '';
-    dir = slash(dir).replace(/\/$/, ''); // 统一转化成 / ，并去掉最后一个 /
-    return dir.replace(/^\/?/, absolute ? '/' : '');
-  }
 
-  /**
-   * 获取远程文件的路径
-   * @param {File} file
-   * @param {Boolean} absolute - 是否使用绝对路径
-   * @returns {String}
-   */
-  getFileRemotePath(file, absolute = true) {
-    let dir = this.getFileRemoteDir(file, absolute);
-    return dir + (dir === '' || dir === '/' ? '' : '/') + file.remote.basename;
-  }
+  _createClass(ServerEnv, [{
+    key: 'getFileRemoteUrl',
+    value: function getFileRemoteUrl(file) {
+      var _file$remote = file.remote,
+          relative = _file$remote.relative,
+          basename = _file$remote.basename;
 
-}
+      var dir = this.appendDestDirToBaseUrl ? this.destDir : '';
+      return _util2.default.urlJoin(this.baseUrl, dir, relative, basename);
+    }
 
-export default ServerEnv;
+    /**
+     * 获取远程文件的目录
+     * @param {File} file
+     * @param {Boolean} absolute - 是否使用绝对路径
+     * @returns {String}
+     */
+
+  }, {
+    key: 'getFileRemoteDir',
+    value: function getFileRemoteDir(file) {
+      var absolute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      // @NOTE join('', '') => '.'
+      var dir = _path2.default.join(this.destDir, file.remote.relative);
+      if (dir === '.') dir = '';
+      dir = (0, _slash2.default)(dir).replace(/\/$/, ''); // 统一转化成 / ，并去掉最后一个 /
+      return dir.replace(/^\/?/, absolute ? '/' : '');
+    }
+
+    /**
+     * 获取远程文件的路径
+     * @param {File} file
+     * @param {Boolean} absolute - 是否使用绝对路径
+     * @returns {String}
+     */
+
+  }, {
+    key: 'getFileRemotePath',
+    value: function getFileRemotePath(file) {
+      var absolute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      var dir = this.getFileRemoteDir(file, absolute);
+      return dir + (dir === '' || dir === '/' ? '' : '/') + file.remote.basename;
+    }
+  }]);
+
+  return ServerEnv;
+}();
+
+exports.default = ServerEnv;

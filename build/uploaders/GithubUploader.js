@@ -1,120 +1,181 @@
-/*
- * deploy-asset
- * https://github.com/qiu8310/deploy-asset
- *
- * Copyright (c) 2015 Zhonglei Qiu
- * Licensed under the MIT license.
- */
+'use strict';
 
-import Uploader from './Uploader';
-import path from 'path';
-import Github from 'github-api';
-import binaryEextensions from 'binary-extensions';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class GithubUploader extends Uploader {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  constructor(env, opts) {
-    super(env, opts);
-    this.maxConcurrentJobs = 1;
+var _Uploader2 = require('./Uploader');
+
+var _Uploader3 = _interopRequireDefault(_Uploader2);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _githubApi = require('github-api');
+
+var _githubApi2 = _interopRequireDefault(_githubApi);
+
+var _binaryExtensions = require('binary-extensions');
+
+var _binaryExtensions2 = _interopRequireDefault(_binaryExtensions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * deploy-asset
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * https://github.com/qiu8310/deploy-asset
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright (c) 2015 Zhonglei Qiu
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the MIT license.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+var GithubUploader = function (_Uploader) {
+  _inherits(GithubUploader, _Uploader);
+
+  function GithubUploader(env, opts) {
+    _classCallCheck(this, GithubUploader);
+
+    var _this = _possibleConstructorReturn(this, (GithubUploader.__proto__ || Object.getPrototypeOf(GithubUploader)).call(this, env, opts));
+
+    _this.maxConcurrentJobs = 1;
+    return _this;
   }
 
   /**
    * @override
    * @borrows Uploader.beforeInitOpts
    */
-  beforeInitOpts(opts) {
-    if (!opts.auth && !opts.user && !opts.pass && !opts.token) {
 
-      this.log.warn('你当前使用的是 ^Github 上传器^ ');
-      this.log.warn('你没有配置相关选项，所以使用的是一个公共帐号');
-      this.log.warn('公共帐号的资源随时可能被他人删除或替换了');
 
-      opts.domain = 'deploy-asset.github.io';
-      opts.repo = 'deploy-asset.github.io';
-      opts.branch = 'master';
-      opts.auth = 'basic';
-      opts.token = '';
-      opts.user = 'deploy-asset';
-      opts.pass = '5Rq-LLt-HRt-7Jr';
-    } else {
-      if (opts.auth === 'oauth') {
-        opts.user = '';
-        opts.pass = '';
-      } else {
+  _createClass(GithubUploader, [{
+    key: 'beforeInitOpts',
+    value: function beforeInitOpts(opts) {
+      if (!opts.auth && !opts.user && !opts.pass && !opts.token) {
+
+        this.log.warn('你当前使用的是 ^Github 上传器^ ');
+        this.log.warn('你没有配置相关选项，所以使用的是一个公共帐号');
+        this.log.warn('公共帐号的资源随时可能被他人删除或替换了');
+
+        opts.domain = 'deploy-asset.github.io';
+        opts.repo = 'deploy-asset.github.io';
+        opts.branch = 'master';
+        opts.auth = 'basic';
         opts.token = '';
+        opts.user = 'deploy-asset';
+        opts.pass = '5Rq-LLt-HRt-7Jr';
+      } else {
+        if (opts.auth === 'oauth') {
+          opts.user = '';
+          opts.pass = '';
+        } else {
+          opts.token = '';
+        }
+      }
+
+      return opts;
+    }
+
+    /**
+     * @override
+     * @borrows Uploader.initService
+     */
+
+  }, {
+    key: 'initService',
+    value: function initService() {
+      var _opts = this.opts,
+          auth = _opts.auth,
+          token = _opts.token,
+          user = _opts.user,
+          pass = _opts.pass,
+          repo = _opts.repo;
+
+      if (auth === 'oauth') this.github = new _githubApi2.default({ token: token, auth: auth });else this.github = new _githubApi2.default({ username: user, password: pass, auth: auth });
+
+      this.repo = this.github.getRepo(user, repo);
+    }
+
+    /**
+     * @override
+     * @borrows Uploader.destroyService
+     */
+
+  }, {
+    key: 'destroyService',
+    value: function destroyService() {
+      this.github = null;
+    }
+
+    /**
+     * @override
+     * @borrows Uploader.uploadFile
+     */
+
+  }, {
+    key: 'uploadFile',
+    value: function uploadFile(file, done) {
+      var filePath = this.env.getFileRemotePath(file, false);
+      var ciMessage = 'Update file ' + filePath;
+      this.repo.write(this.opts.branch, filePath, file.remote.content, ciMessage, done);
+    }
+
+    /**
+     * @override
+     * @borrows Uploader.isRemoteFileExists
+     */
+
+  }, {
+    key: 'isRemoteFileExists',
+    value: function isRemoteFileExists(file, done) {
+      this.repo.read(this.opts.branch, this.env.getFileRemotePath(file, false), function (err, data) {
+        done(null, !!data);
+      });
+    }
+
+    /**
+     * 注意，Github 的 pages 生成会有很短的时间延迟，所以刚上传完的文件可能没法立即得到其内容
+     *
+     * 也不能使用 repo.read 方法，它返回的是字符串，不是 buffer，
+     * 字符串转化成 buffer 不一定和原内容一致
+     *
+     * @override
+     * @borrows Uploader.getRemoteFileContent
+     */
+
+  }, {
+    key: 'getRemoteFileContent',
+    value: function getRemoteFileContent(file, done) {
+      // 判断文件类型，如果是文件文件，通过 api 的形式获取，如果是其它类型文件，则通过下载的形式
+      if (_binaryExtensions2.default.indexOf(file.ext.toLowerCase()) >= 0) {
+        _Uploader3.default.download(file.remote.url, done);
+      } else {
+        this.repo.read(this.opts.branch, this.env.getFileRemotePath(file, false), function (err, data) {
+          if (err) done(err);else if (typeof data !== 'string') done(new Error(data || 'UNKNOWN'));else done(null, new Buffer(data));
+        });
       }
     }
 
-    return opts;
-  }
+    /**
+     * @override
+     * @borrows Uploader.removeRemoteFile
+     */
 
-  /**
-   * @override
-   * @borrows Uploader.initService
-   */
-  initService() {
-    let { auth, token, user, pass, repo } = this.opts;
-    if (auth === 'oauth') this.github = new Github({ token, auth });else this.github = new Github({ username: user, password: pass, auth });
-
-    this.repo = this.github.getRepo(user, repo);
-  }
-
-  /**
-   * @override
-   * @borrows Uploader.destroyService
-   */
-  destroyService() {
-    this.github = null;
-  }
-
-  /**
-   * @override
-   * @borrows Uploader.uploadFile
-   */
-  uploadFile(file, done) {
-    let filePath = this.env.getFileRemotePath(file, false);
-    let ciMessage = 'Update file ' + filePath;
-    this.repo.write(this.opts.branch, filePath, file.remote.content, ciMessage, done);
-  }
-
-  /**
-   * @override
-   * @borrows Uploader.isRemoteFileExists
-   */
-  isRemoteFileExists(file, done) {
-    this.repo.read(this.opts.branch, this.env.getFileRemotePath(file, false), (err, data) => {
-      done(null, !!data);
-    });
-  }
-
-  /**
-   * 注意，Github 的 pages 生成会有很短的时间延迟，所以刚上传完的文件可能没法立即得到其内容
-   *
-   * 也不能使用 repo.read 方法，它返回的是字符串，不是 buffer，
-   * 字符串转化成 buffer 不一定和原内容一致
-   *
-   * @override
-   * @borrows Uploader.getRemoteFileContent
-   */
-  getRemoteFileContent(file, done) {
-    // 判断文件类型，如果是文件文件，通过 api 的形式获取，如果是其它类型文件，则通过下载的形式
-    if (binaryEextensions.indexOf(file.ext.toLowerCase()) >= 0) {
-      Uploader.download(file.remote.url, done);
-    } else {
-      this.repo.read(this.opts.branch, this.env.getFileRemotePath(file, false), (err, data) => {
-        if (err) done(err);else if (typeof data !== 'string') done(new Error(data || 'UNKNOWN'));else done(null, new Buffer(data));
-      });
+  }, {
+    key: 'removeRemoteFile',
+    value: function removeRemoteFile(file, done) {
+      this.repo.remove(this.opts.branch, this.env.getFileRemotePath(file, false), done);
     }
-  }
+  }]);
 
-  /**
-   * @override
-   * @borrows Uploader.removeRemoteFile
-   */
-  removeRemoteFile(file, done) {
-    this.repo.remove(this.opts.branch, this.env.getFileRemotePath(file, false), done);
-  }
-}
+  return GithubUploader;
+}(_Uploader3.default);
 
 GithubUploader.config = {
   error: {
@@ -128,4 +189,4 @@ GithubUploader.config = {
   }
 };
 
-export default GithubUploader;
+exports.default = GithubUploader;

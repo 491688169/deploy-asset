@@ -1,17 +1,19 @@
-import async from 'async';
-import ylog from 'ylog';
-import util from '../util';
+'use strict';
 
-export default function (files, opts, done) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (files, opts, done) {
   try {
 
-    util.banner('开始上传');
+    _util2.default.banner('开始上传');
 
-    let uploader = opts.uploader;
-    let uploadingCount = 0;
-    let uploadingError;
+    var uploader = opts.uploader;
+    var uploadingCount = 0;
+    var uploadingError = void 0;
 
-    let endStep = err => {
+    var endStep = function endStep(err) {
       if (err && uploadingCount !== 0) {
         uploadingError = err;
         return false;
@@ -19,11 +21,11 @@ export default function (files, opts, done) {
       done(err, files, opts);
     };
 
-    ylog.verbose('同时上传文件的个数为 ^%s^', opts.concurrence);
+    _ylog2.default.verbose('同时上传文件的个数为 ^%s^', opts.concurrence);
 
-    let upload = (file, nextFile) => {
+    var upload = function upload(file, nextFile) {
       uploadingCount++;
-      file.upload(err => {
+      file.upload(function (err) {
         uploadingCount--;
         if (uploadingCount === 0 && uploadingError) {
           done(uploadingError);
@@ -32,8 +34,24 @@ export default function (files, opts, done) {
       });
     };
 
-    uploader.run(endUpload => async.eachLimit(files, opts.concurrence, upload, endUpload), endStep);
+    uploader.run(function (endUpload) {
+      return _async2.default.eachLimit(files, opts.concurrence, upload, endUpload);
+    }, endStep);
   } catch (e) {
     done(e);
   }
-}
+};
+
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+var _ylog = require('ylog');
+
+var _ylog2 = _interopRequireDefault(_ylog);
+
+var _util = require('../util');
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

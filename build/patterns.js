@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /*
  * deploy-asset
  * https://github.com/qiu8310/deploy-asset
@@ -34,7 +39,7 @@
  * @private
  * @type {Object}
  */
-export default {
+exports.default = {
   html: [{
     type: 'js',
     re: /<script[^\>]+src=['"]([^"']+)["']/gm,
@@ -69,11 +74,11 @@ export default {
     type: 'js',
     re: /data-main=['"]([^"']+)['"]/gm,
     msg: '查找 html 文件中 require.js 指定的 data-main 属性中的 js 文件',
-    inFilter: function (m) {
+    inFilter: function inFilter(m) {
       return (/\.js$/.test(m) ? m : m + '.js'
       );
     },
-    outFilter: function (m) {
+    outFilter: function outFilter(m) {
       return m.replace(/\.js$/, '');
     }
   }, {

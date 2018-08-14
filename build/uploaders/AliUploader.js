@@ -114,6 +114,7 @@ var AliUploader = function (_Uploader) {
     value: function uploadFile(file, done) {
       var filePath = this.env.getFileRemotePath(file, false);
       this.client.put(filePath, file).then(function (ret) {
+        console.log('uploadFile', ret);
         done(null, ret);
       }).catch(function (err) {
         done(err);
@@ -129,6 +130,7 @@ var AliUploader = function (_Uploader) {
     key: 'isRemoteFileExists',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(file, done) {
+        var ret;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -138,22 +140,25 @@ var AliUploader = function (_Uploader) {
                 return this.client.get(this.env.getFileRemotePath(file, false));
 
               case 3:
+                ret = _context.sent;
+
+                console.log('isRemoteFileExists', ret);
                 done(null, false);
-                _context.next = 9;
+                _context.next = 11;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context['catch'](0);
 
                 done(null, true);
 
-              case 9:
+              case 11:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 6]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       function isRemoteFileExists(_x, _x2) {
@@ -184,22 +189,23 @@ var AliUploader = function (_Uploader) {
               case 3:
                 buffer = _context2.sent;
 
+                console.log('getRemoteFileContent', buffer);
                 done(null, buffer);
-                _context2.next = 10;
+                _context2.next = 11;
                 break;
 
-              case 7:
-                _context2.prev = 7;
+              case 8:
+                _context2.prev = 8;
                 _context2.t0 = _context2['catch'](0);
 
                 done(_context2.t0, null);
 
-              case 10:
+              case 11:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 7]]);
+        }, _callee2, this, [[0, 8]]);
       }));
 
       function getRemoteFileContent(_x3, _x4) {
@@ -230,22 +236,23 @@ var AliUploader = function (_Uploader) {
               case 3:
                 ret = _context3.sent;
 
+                console.log('removeRemoteFile', ret);
                 done(null, ret);
-                _context3.next = 10;
+                _context3.next = 11;
                 break;
 
-              case 7:
-                _context3.prev = 7;
+              case 8:
+                _context3.prev = 8;
                 _context3.t0 = _context3['catch'](0);
 
                 done(_context3.t0);
 
-              case 10:
+              case 11:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 7]]);
+        }, _callee3, this, [[0, 8]]);
       }));
 
       function removeRemoteFile(_x5, _x6) {

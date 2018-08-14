@@ -53,6 +53,7 @@ class AliUploader extends Uploader {
   uploadFile(file, done) {
     let filePath = this.env.getFileRemotePath(file, false);
     this.client.put(filePath, file).then(ret => {
+      console.log('uploadFile', ret)
       done(null, ret)
     }).catch(err => {
       done(err)
@@ -65,9 +66,8 @@ class AliUploader extends Uploader {
    */
   async isRemoteFileExists(file, done) {
     try {
-      console.log('remotePath', this.env.getFileRemotePath(file, false));
       const ret = await this.client.get(this.env.getFileRemotePath(file, false));
-      console.log('exist', ret)
+      console.log('isRemoteFileExists', ret)
       done(null, false)
     } catch (e) {
       done(null, true)
@@ -81,6 +81,7 @@ class AliUploader extends Uploader {
   async getRemoteFileContent(file, done) {
     try {
       const buffer = await this.client.get(this.env.getFileRemotePath(file, false));
+      console.log('getRemoteFileContent', buffer)
       done(null, buffer)
     } catch (err) {
       done(err, null)
@@ -94,6 +95,7 @@ class AliUploader extends Uploader {
   async removeRemoteFile(file, done) {
     try {
       const ret = await this.client.delete(this.env.getFileRemotePath(file, false));
+      console.log('removeRemoteFile', ret)
       done(null, ret)
     } catch (err) {
       done(err)

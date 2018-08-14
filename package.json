@@ -56,6 +56,7 @@
   "dependencies": {
     "alter": "^0.2.0",
     "async": "1.4.2",
+    "babel-runtime": "^6.26.0",
     "binary-extensions": "^1.3.1",
     "dep.js": "0.0.2",
     "es6-shim": "^0.33.6",
@@ -83,6 +84,7 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "coveralls": "^2.11.4",

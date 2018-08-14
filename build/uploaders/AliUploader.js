@@ -4,7 +4,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _Uploader2 = require('./Uploader');
 
@@ -16,32 +38,25 @@ var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * deploy-asset
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * https://github.com/qiu8310/deploy-asset
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright (c) 2015 Zhonglei Qiu
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the MIT license.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+/*
+ * deploy-asset
+ * https://github.com/qiu8310/deploy-asset
+ *
+ * Copyright (c) 2015 Zhonglei Qiu
+ * Licensed under the MIT license.
+ */
 
 var OSS = require('ali-oss');
 
 var AliUploader = function (_Uploader) {
-  _inherits(AliUploader, _Uploader);
+  (0, _inherits3.default)(AliUploader, _Uploader);
 
   function AliUploader() {
-    _classCallCheck(this, AliUploader);
-
-    return _possibleConstructorReturn(this, (AliUploader.__proto__ || Object.getPrototypeOf(AliUploader)).apply(this, arguments));
+    (0, _classCallCheck3.default)(this, AliUploader);
+    return (0, _possibleConstructorReturn3.default)(this, (AliUploader.__proto__ || Object.getPrototypeOf(AliUploader)).apply(this, arguments));
   }
 
-  _createClass(AliUploader, [{
+  (0, _createClass3.default)(AliUploader, [{
     key: 'beforeInitOpts',
 
 
@@ -111,8 +126,8 @@ var AliUploader = function (_Uploader) {
   }, {
     key: 'isRemoteFileExists',
     value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(file, done) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(file, done) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -154,9 +169,9 @@ var AliUploader = function (_Uploader) {
   }, {
     key: 'getRemoteFileContent',
     value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(file, done) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(file, done) {
         var buffer;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -200,9 +215,9 @@ var AliUploader = function (_Uploader) {
   }, {
     key: 'removeRemoteFile',
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(file, done) {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(file, done) {
         var ret;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -238,7 +253,6 @@ var AliUploader = function (_Uploader) {
       return removeRemoteFile;
     }()
   }]);
-
   return AliUploader;
 }(_Uploader3.default);
 

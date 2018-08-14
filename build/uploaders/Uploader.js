@@ -4,13 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * deploy-asset
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * https://github.com/qiu8310/deploy-asset
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (c) 2015 Zhonglei Qiu
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Licensed under the MIT license.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _slash = require('slash');
 
@@ -38,7 +38,13 @@ var _util2 = _interopRequireDefault(_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/*
+ * deploy-asset
+ * https://github.com/qiu8310/deploy-asset
+ *
+ * Copyright (c) 2015 Zhonglei Qiu
+ * Licensed under the MIT license.
+ */
 
 var _uploaderMap = {};
 
@@ -66,8 +72,7 @@ var Uploader = function () {
    */
   function Uploader(env) {
     var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, Uploader);
+    (0, _classCallCheck3.default)(this, Uploader);
 
     /**
      * @type String
@@ -138,7 +143,7 @@ var Uploader = function () {
    */
 
 
-  _createClass(Uploader, [{
+  (0, _createClass3.default)(Uploader, [{
     key: 'beforeInitOpts',
 
 
@@ -544,7 +549,6 @@ var Uploader = function () {
       return new Ctor(env, opts);
     }
   }]);
-
   return Uploader;
 }();
 

@@ -4,7 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _slash = require('slash');
 
@@ -20,14 +26,13 @@ var _util2 = _interopRequireDefault(_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /**
  * 远程服务器相关的环境
  */
 var ServerEnv = function () {
   function ServerEnv(opts) {
-    _classCallCheck(this, ServerEnv);
+    (0, _classCallCheck3.default)(this, ServerEnv);
+
 
     var uploaderOpts = Object.assign({}, opts.uploaderOpts, opts.uploader && opts.uploader.opts || {});
 
@@ -64,7 +69,7 @@ var ServerEnv = function () {
    */
 
 
-  _createClass(ServerEnv, [{
+  (0, _createClass3.default)(ServerEnv, [{
     key: 'getFileRemoteUrl',
     value: function getFileRemoteUrl(file) {
       var _file$remote = file.remote,
@@ -110,7 +115,6 @@ var ServerEnv = function () {
       return dir + (dir === '' || dir === '/' ? '' : '/') + file.remote.basename;
     }
   }]);
-
   return ServerEnv;
 }();
 

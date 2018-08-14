@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
 exports.default = function (any, opts, next) {
   // 命令行传过来的一定是个数组
   // 但有时可能会直接传进一个文件夹来，同时希望此文件夹为根目录
@@ -102,8 +106,6 @@ var _Uploader2 = _interopRequireDefault(_Uploader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _initUploader(opts, DEFAULTS) {
 
   var uploader = opts.uploader,
@@ -179,7 +181,7 @@ function _parseDaAnyArgument(any) {
 
   if (Array.isArray(any)) {
     any.forEach(function (a) {
-      return filePaths.push.apply(filePaths, _toConsumableArray(_parseDaAnyArgument(a)));
+      return filePaths.push.apply(filePaths, (0, _toConsumableArray3.default)(_parseDaAnyArgument(a)));
     });
   } else if (typeof any === 'string') {
     try {
@@ -187,10 +189,10 @@ function _parseDaAnyArgument(any) {
       if (stat.isFile()) {
         filePaths.push(any);
       } else if (stat.isDirectory()) {
-        filePaths.push.apply(filePaths, _toConsumableArray(getAllFilesInDirectory(any)));
+        filePaths.push.apply(filePaths, (0, _toConsumableArray3.default)(getAllFilesInDirectory(any)));
       }
     } catch (e) {
-      filePaths.push.apply(filePaths, _toConsumableArray(_glob2.default.sync(any, { nodir: true })));
+      filePaths.push.apply(filePaths, (0, _toConsumableArray3.default)(_glob2.default.sync(any, { nodir: true })));
     }
   } else {
     throw new Error('ANY_ARGUMENT_ERROR');
@@ -214,7 +216,7 @@ function getAllFilesInDirectory(dir) {
       if (stat.isFile()) {
         result.push(_xPath2.default.relative(cwd, filePath));
       } else if (stat.isDirectory()) {
-        result.push.apply(result, _toConsumableArray(getAllFilesInDirectory(filePath)));
+        result.push.apply(result, (0, _toConsumableArray3.default)(getAllFilesInDirectory(filePath)));
       }
     }
   });

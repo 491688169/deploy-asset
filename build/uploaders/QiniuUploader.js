@@ -164,3 +164,4 @@ QiniuUploader.config = {
 };
 
 exports.default = QiniuUploader;
+module.exports = exports['default'];

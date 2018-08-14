@@ -549,3 +549,4 @@ var Uploader = function () {
 }();
 
 exports.default = Uploader;
+module.exports = exports['default'];

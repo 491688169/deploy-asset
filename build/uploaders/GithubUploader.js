@@ -190,3 +190,4 @@ GithubUploader.config = {
 };
 
 exports.default = GithubUploader;
+module.exports = exports['default'];

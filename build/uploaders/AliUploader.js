@@ -253,3 +253,4 @@ AliUploader.config = {
 };
 
 exports.default = AliUploader;
+module.exports = exports['default'];

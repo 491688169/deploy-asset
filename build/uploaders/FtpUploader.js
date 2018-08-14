@@ -167,3 +167,4 @@ FtpUploader.config = {
 };
 
 exports.default = FtpUploader;
+module.exports = exports['default'];

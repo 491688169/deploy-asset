@@ -233,3 +233,4 @@ exports.default = {
     return type;
   }
 };
+module.exports = exports['default'];

@@ -212,3 +212,4 @@ UpyunUploader.config = {
 };
 
 exports.default = UpyunUploader;
+module.exports = exports['default'];

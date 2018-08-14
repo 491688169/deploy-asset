@@ -220,3 +220,4 @@ function getAllFilesInDirectory(dir) {
   });
   return result;
 }
+module.exports = exports['default'];

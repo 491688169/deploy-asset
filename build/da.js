@@ -202,3 +202,4 @@ function da(any, opts, callback) {
 }
 
 exports.default = da;
+module.exports = exports['default'];

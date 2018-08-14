@@ -125,3 +125,4 @@ MockUploader.config = {
 };
 
 exports.default = MockUploader;
+module.exports = exports['default'];

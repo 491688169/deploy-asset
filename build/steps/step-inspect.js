@@ -221,3 +221,4 @@ archy
 
  */
 function outputFileTree(base, files) {}
+module.exports = exports['default'];

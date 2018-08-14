@@ -30,3 +30,4 @@ exports.default = {
     inspectable: false
   }
 };
+module.exports = exports['default'];

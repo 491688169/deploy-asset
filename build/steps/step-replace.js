@@ -139,3 +139,5 @@ var _file = require('../file');
 var _file2 = _interopRequireDefault(_file);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];

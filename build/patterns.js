@@ -146,3 +146,4 @@ exports.default = {
     msg: '查找 json 文件中引用的文件'
   }]
 };
+module.exports = exports['default'];

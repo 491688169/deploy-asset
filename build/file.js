@@ -740,3 +740,4 @@ File.JS_TYPE = _FileType2.default.JS.value;
  所有文件的引用都放在这里
  */
 File.refs = {};
+module.exports = exports['default'];

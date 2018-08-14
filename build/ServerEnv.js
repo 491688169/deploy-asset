@@ -115,3 +115,4 @@ var ServerEnv = function () {
 }();
 
 exports.default = ServerEnv;
+module.exports = exports['default'];

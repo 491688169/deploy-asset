@@ -65,13 +65,13 @@ class AliUploader extends Uploader {
    * @borrows Uploader.isRemoteFileExists
    */
   async isRemoteFileExists(file, done) {
-    try {
-      const ret = await this.client.get(this.env.getFileRemotePath(file, false));
-      console.log('isRemoteFileExists', ret)
-      done(null, true)
-    } catch (e) {
-      done(null, false)
-    }
+    // try {
+    //   const ret = await this.client.get(this.env.getFileRemotePath(file, false));
+    //   console.log('isRemoteFileExists', ret)
+    //   done(null, true)
+    // } catch (e) {
+    //   done(null, false)
+    // }
   }
 
   /**

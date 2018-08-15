@@ -87,7 +87,7 @@ var AliUploader = function (_Uploader) {
           region = _opts.region,
           bucket = _opts.bucket;
 
-      var client = OSS({
+      var client = new OSS({
         accessKeyId: accessKeyId, accessKeySecret: accessKeySecret, region: region, bucket: bucket
       });
       this.client = client;

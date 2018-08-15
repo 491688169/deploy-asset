@@ -32,7 +32,7 @@ class AliUploader extends Uploader {
    */
   initService() {
     const {opts: {ak: accessKeyId, sk: accessKeySecret, region, bucket}} = this;
-    const client = OSS({
+    const client = new OSS({
       accessKeyId, accessKeySecret, region, bucket
     });
     this.client = client;
